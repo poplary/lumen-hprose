@@ -1,0 +1,20 @@
+{
+    "name": "poplary/lumen-hprose",
+    "description": "Hprose for Lumen",
+    "keywords": ["hprose", "lumen"],
+    "license": "MIT",
+    "require": {
+        "php": ">=7.2.5",
+        "hprose/hprose": "^2.0",
+        "laravel/lumen-framework": "^7.0"
+    },
+    "suggest": {
+        "hprose/hprose-swoole": "Required to use swoole server (^2.0)."
+    },
+    "autoload": {
+        "psr-4": {
+            "Poplary\\LumenHprose\\": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
