@@ -3,8 +3,6 @@
 namespace Poplary\LumenHprose\Routing;
 
 use Illuminate\Support\Arr;
-use ReflectionClass;
-use ReflectionException;
 
 /**
  * Class Router.
@@ -55,8 +53,6 @@ class Router
      * @param array           $options
      *                                 是一个关联数组，它里面包含了一些对该服务函数的特殊设置，详情参考hprose-php文档介绍
      *                                 https://github.com/hprose/hprose-php/wiki/06-Hprose-%E6%9C%8D%E5%8A%A1%E5%99%A8#addfunction-%E6%96%B9%E6%B3%95
-     *
-     * @throws ReflectionException
      */
     public function add(string $name, $action, array $options = []): void
     {
@@ -153,19 +149,15 @@ class Router
      * @param string|null $namespace
      * @param string      $controller
      *
-     * @throws ReflectionException
-     *
      * @return array
      */
     protected function parseController($namespace, string $controller): array
     {
         [$classAsStr, $method] = explode('@', $controller);
 
-        $refClass = new ReflectionClass(
+        $class = app()->get(
             implode('\\', array_filter([$namespace, $classAsStr]))
         );
-
-        $class = $refClass->newInstance();
 
         return [$class, $method];
     }
