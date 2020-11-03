@@ -80,22 +80,18 @@ class ServerLaunch
                  */
                 if ($middleware instanceof BeforeFilterHandler) {
                     $server->addBeforeFilterHandler($middleware);
-                    break;
                 }
 
                 if ($middleware instanceof Filter) {
                     $server->addFilter($middleware);
-                    break;
                 }
 
                 if ($middleware instanceof AfterFilterHandler) {
                     $server->addAfterFilterHandler($middleware);
-                    break;
                 }
 
                 if ($middleware instanceof InvokeHandler) {
                     $server->addInvokeHandler($middleware);
-                    break;
                 }
             }
 
