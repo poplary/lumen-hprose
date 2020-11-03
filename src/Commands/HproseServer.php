@@ -2,7 +2,11 @@
 
 namespace Poplary\LumenHprose\Commands;
 
+use Hprose\Filter;
 use Poplary\LumenHprose\Facades\Router;
+use Poplary\LumenHprose\Middleware\Contracts\AfterFilterHandler;
+use Poplary\LumenHprose\Middleware\Contracts\BeforeFilterHandler;
+use Poplary\LumenHprose\Middleware\Contracts\InvokeHandler;
 use Poplary\LumenHprose\Middleware\ServerLoggerMiddleware;
 use Poplary\LumenHprose\Server\ServerLaunch;
 use Illuminate\Console\Command;
@@ -41,12 +45,6 @@ class HproseServer extends Command
         $this->outputInfo();
         $server = app('hprose.server');
 
-        // 加载中间件
-        $middlewareClasses = config('hprose.middleware');
-        foreach ($middlewareClasses as $middlewareClass) {
-            $server->addInvokeHandler(new $middlewareClass());
-        }
-
         // 服务启动
         $server->start();
 
@@ -64,7 +62,7 @@ class HproseServer extends Command
 
         $this->comment('版本:');
         $this->output->writeln(sprintf(' - Laravel/Lumen=<info>%s</info>', app()->version()));
-        $this->output->writeln(sprintf(' - Hprose-php=<info>2.0.40</info>'));
+        $this->output->writeln(sprintf(' - Hprose-php=<info>2.0.*</info>'));
         $this->output->newLine();
 
         $this->comment('启动的服务器类型:');
@@ -73,6 +71,13 @@ class HproseServer extends Command
 
         $this->comment('监听:');
         $this->line(sprintf(' - <info>%s</info>', config('hprose.uri')));
+        $this->output->newLine();
+
+        $this->comment('加载的中间件:');
+        $middlewareClasses = config('hprose.middleware');
+        foreach ($middlewareClasses as $middlewareClass) {
+            $this->line(sprintf(' - <info>%s</info>', $middlewareClass));
+        }
         $this->output->newLine();
 
         $this->comment('可调用远程方法:');

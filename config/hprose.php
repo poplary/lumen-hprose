@@ -26,6 +26,6 @@ return [
      * 中间件
      */
     'middleware' => [
-        \Poplary\LumenHprose\Middleware\ServerLoggerMiddleware::class,
+        Poplary\LumenHprose\Middleware\ServerLoggerInvokeHandler::class,
     ],
 ];

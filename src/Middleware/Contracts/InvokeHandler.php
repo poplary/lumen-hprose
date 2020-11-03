@@ -1,14 +1,18 @@
 <?php
 
-namespace Poplary\LumenHprose\Middleware;
+namespace Poplary\LumenHprose\Middleware\Contracts;
 
 use Closure;
 use stdClass;
 
-abstract class Middleware
+/**
+ * @see https://github.com/hprose/hprose-php/wiki/12-Hprose-%E4%B8%AD%E9%97%B4%E4%BB%B6
+ * Class InvokeHandler.
+ */
+abstract class InvokeHandler
 {
     /**
-     * @param          $name
+     * @param mixed    $name
      * @param array    $args
      * @param stdClass $context
      * @param Closure  $next

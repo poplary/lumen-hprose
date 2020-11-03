@@ -5,7 +5,9 @@
     "license": "MIT",
     "require": {
         "php": ">=7.2.5",
+        "ext-json": "*",
         "hprose/hprose": "^2.0",
+        "hprose/hprose-swoole": "^2.0",
         "laravel/lumen-framework": "^7.0|^8.0"
     },
     "suggest": {

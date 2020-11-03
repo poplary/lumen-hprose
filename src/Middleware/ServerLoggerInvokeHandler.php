@@ -4,12 +4,13 @@ namespace Poplary\LumenHprose\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Log;
+use Poplary\LumenHprose\Middleware\Contracts\InvokeHandler;
 use stdClass;
 
 /**
- * Class ServerLoggerMiddleware.
+ * Class ServerLoggerInvokeHandler.
  */
-final class ServerLoggerMiddleware extends Middleware
+final class ServerLoggerInvokeHandler extends InvokeHandler
 {
     /**
      * 服务端的调用日志记录.

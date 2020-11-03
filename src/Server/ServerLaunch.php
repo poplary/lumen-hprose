@@ -2,6 +2,10 @@
 
 namespace Poplary\LumenHprose\Server;
 
+use Hprose\Filter;
+use Poplary\LumenHprose\Middleware\Contracts\AfterFilterHandler;
+use Poplary\LumenHprose\Middleware\Contracts\BeforeFilterHandler;
+use Poplary\LumenHprose\Middleware\Contracts\InvokeHandler;
 use Poplary\LumenHprose\Routing\Router;
 use Laravel\Lumen\Application;
 use RuntimeException;
@@ -55,10 +59,44 @@ class ServerLaunch
             // 实例化 Server
             if ('socket' === $hproseServer) {
                 $server = new \Hprose\Socket\Server($uri);
-            } elseif ('swoole' === $hproseServer && class_exists(\Hprose\Swoole\Socket\Server::class)) {
+            } elseif ('swoole' === $hproseServer) {
+                if (class_exists(\Hprose\Swoole\Socket\Server::class)) {
+                    throw new RuntimeException('未安装 hprose-swoole 包.');
+                }
                 $server = new \Hprose\Swoole\Socket\Server($uri);
             } else {
                 throw new RuntimeException('HPROSE_SERVER 设置错误，只能为 socket 或者 swoole.');
+            }
+
+            // 加载中间件
+            $middlewareClasses = config('hprose.middleware');
+            foreach ($middlewareClasses as $middlewareClass) {
+                $middleware = new $middlewareClass();
+
+                /**
+                 * 过滤器和中间件的使用.
+                 * @see https://github.com/hprose/hprose-php/wiki/11-Hprose-%E8%BF%87%E6%BB%A4%E5%99%A8
+                 * @see https://github.com/hprose/hprose-php/wiki/12-Hprose-%E4%B8%AD%E9%97%B4%E4%BB%B6
+                 */
+                if ($middleware instanceof BeforeFilterHandler) {
+                    $hproseServer->addBeforeFilterHandler($middleware);
+                    break;
+                }
+
+                if ($middleware instanceof Filter) {
+                    $hproseServer->addFilter($middleware);
+                    break;
+                }
+
+                if ($middleware instanceof AfterFilterHandler) {
+                    $hproseServer->addAfterFilterHandler($middleware);
+                    break;
+                }
+
+                if ($middleware instanceof InvokeHandler) {
+                    $hproseServer->addInvokeHandler($middleware);
+                    break;
+                }
             }
 
             // 错误处理

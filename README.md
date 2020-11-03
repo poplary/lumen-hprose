@@ -130,6 +130,15 @@ try{
 
 ```
 
+### 中间件
+
+中间件分为四种，`Filter`，`BeforeFilterHandler`，`AfterFilterHandler`，`InvokeHandler`.
+
+* `Filter` 的使用可以查看 [11 Hprose 过滤器](https://github.com/hprose/hprose-php/wiki/11-Hprose-%E8%BF%87%E6%BB%A4%E5%99%A8)。
+
+* `BeforeFilterHandler`，`AfterFilterHandler`，`InvokeHandler` 有对应的接口，存放在 `./src/Middleware/Contracts` 目录中，新建中间件时，需要实现对应的接口。相关的使用可以查看 [12 Hprose 中间件](https://github.com/hprose/hprose-php/wiki/12-Hprose-%E4%B8%AD%E9%97%B4%E4%BB%B6)。
+* 中间件需要注意加载的顺序，具体配置在 `./config/hprose.php` 的 `middleware` 数组中。
+
 ### 启动服务
 
 ```shell
