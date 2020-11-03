@@ -79,22 +79,22 @@ class ServerLaunch
                  * @see https://github.com/hprose/hprose-php/wiki/12-Hprose-%E4%B8%AD%E9%97%B4%E4%BB%B6
                  */
                 if ($middleware instanceof BeforeFilterHandler) {
-                    $hproseServer->addBeforeFilterHandler($middleware);
+                    $server->addBeforeFilterHandler($middleware);
                     break;
                 }
 
                 if ($middleware instanceof Filter) {
-                    $hproseServer->addFilter($middleware);
+                    $server->addFilter($middleware);
                     break;
                 }
 
                 if ($middleware instanceof AfterFilterHandler) {
-                    $hproseServer->addAfterFilterHandler($middleware);
+                    $server->addAfterFilterHandler($middleware);
                     break;
                 }
 
                 if ($middleware instanceof InvokeHandler) {
-                    $hproseServer->addInvokeHandler($middleware);
+                    $server->addInvokeHandler($middleware);
                     break;
                 }
             }
