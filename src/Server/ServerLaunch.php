@@ -60,9 +60,6 @@ class ServerLaunch
             if ('socket' === $hproseServer) {
                 $server = new \Hprose\Socket\Server($uri);
             } elseif ('swoole' === $hproseServer) {
-                if (class_exists(\Hprose\Swoole\Socket\Server::class)) {
-                    throw new RuntimeException('未安装 hprose-swoole 包.');
-                }
                 $server = new \Hprose\Swoole\Socket\Server($uri);
             } else {
                 throw new RuntimeException('HPROSE_SERVER 设置错误，只能为 socket 或者 swoole.');
