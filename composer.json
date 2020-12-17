@@ -9,6 +9,7 @@
         "ext-swoole": "*",
         "hprose/hprose": "^2.0",
         "hprose/hprose-swoole": "^2.0",
+        "nunomaduro/collision": "^5.1",
         "laravel/lumen-framework": "^7.0|^8.0"
     },
     "autoload": {

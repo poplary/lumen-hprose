@@ -3,6 +3,9 @@
 namespace Poplary\LumenHprose\Server;
 
 use Hprose\Filter;
+use Illuminate\Support\Facades\Log;
+use NunoMaduro\Collision\ConsoleColor;
+use NunoMaduro\Collision\Highlighter;
 use Poplary\LumenHprose\Middleware\Contracts\AfterFilterHandler;
 use Poplary\LumenHprose\Middleware\Contracts\BeforeFilterHandler;
 use Poplary\LumenHprose\Middleware\Contracts\InvokeHandler;
@@ -60,6 +63,9 @@ class ServerLaunch
             if ('socket' === $hproseServer) {
                 $server = new \Hprose\Socket\Server($uri);
             } elseif ('swoole' === $hproseServer) {
+                if (class_exists(\Hprose\Swoole\Socket\Server::class)) {
+                    throw new RuntimeException('未安装 hprose-swoole 包.');
+                }
                 $server = new \Hprose\Swoole\Socket\Server($uri);
             } else {
                 throw new RuntimeException('HPROSE_SERVER 设置错误，只能为 socket 或者 swoole.');
@@ -92,14 +98,18 @@ class ServerLaunch
                 }
             }
 
+            // 是否开启 debug
+            $server->debug = config('hprose.debug');
+
             // 错误处理
             $server->onSendError = function ($error, stdClass $context) {
+                // 在 cli 上直接输出错误信息
+                $highLighter = new Highlighter(new ConsoleColor());
+                Log::channel('stderr')->error(PHP_EOL.$highLighter->highlight($error, 1));
+
                 $message = json_encode(['message' => $error->getMessage(), 'code' => $error->getCode()]);
                 throw new RuntimeException($message, $error->getCode());
             };
-
-            // 是否开启 debug
-            $server->debug = config('hprose.debug');
 
             return $server;
         });
