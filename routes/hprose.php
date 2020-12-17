@@ -8,4 +8,5 @@
 
 use Poplary\LumenHprose\Facades\Router;
 
+/*  @uses Poplary\LumenHprose\Controllers\DemoController::getServiceName() */
 Router::add('getServiceName', 'Poplary\LumenHprose\Controllers\DemoController@getServiceName');
