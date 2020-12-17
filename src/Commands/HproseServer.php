@@ -2,12 +2,7 @@
 
 namespace Poplary\LumenHprose\Commands;
 
-use Hprose\Filter;
 use Poplary\LumenHprose\Facades\Router;
-use Poplary\LumenHprose\Middleware\Contracts\AfterFilterHandler;
-use Poplary\LumenHprose\Middleware\Contracts\BeforeFilterHandler;
-use Poplary\LumenHprose\Middleware\Contracts\InvokeHandler;
-use Poplary\LumenHprose\Middleware\ServerLoggerMiddleware;
 use Poplary\LumenHprose\Server\ServerLaunch;
 use Illuminate\Console\Command;
 use Laravel\Lumen\Application;
